@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<carousel>
+    <website>https://www.littledogsocialmedia.com/wp-content/uploads/2019/05/</website>
+    <slides>
+        <slide>
+            <alt>Carousel Image 1</alt>
+            <image>Winter_2024_Little_Dog_Website_Sliders-1.jpg</image>
+        </slide>
+        <slide>
+            <alt>Carousel Image 2</alt>
+            <image>Team_Collage_Slider.jpg</image>
+        </slide>
+        <slide>
+            <alt>Carousel Image 3</alt>
+            <image>3-4.png</image>
+        </slide>
+        <slide>
+            <alt>Carousel Image 4</alt>
+            <image>4-4.png</image>
+        </slide>
+    </slides>
+
+</carousel>

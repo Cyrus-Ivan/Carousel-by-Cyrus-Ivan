@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      /* Slideshow container */
+      .slideshow-container {
+        max-width: 1000px;
+        position: relative;
+        margin: auto;
+      }
+
+      /* Hide the images by default */
+      .mySlides {
+        display: none;
+      }
+
+      /* Next & previous buttons */
+      .prev,
+      .next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        width: auto;
+        margin-top: -22px;
+        padding: 16px;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        transition: 0.6s ease;
+        border-radius: 0 3px 3px 0;
+        user-select: none;
+      }
+
+      /* Position the "next button" to the right */
+      .next {
+        right: 0;
+        border-radius: 3px 0 0 3px;
+      }
+
+      /* On hover, add a black background color with a little bit see-through */
+      .prev:hover,
+      .next:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      /* Caption text */
+      .text {
+        color: black;
+        font-size: 1em;
+        padding: 8px 12px;
+        position: absolute;
+        bottom: 8px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .dots {
+        text-align: center;
+      }
+
+      /* The dots/bullets/indicators */
+      .dot {
+        cursor: pointer;
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+        transition: background-color 0.6s ease;
+      }
+
+      .active,
+      .dot:hover {
+        background-color: #717171;
+      }
+
+      /* Fading animation */
+      .fade {
+        animation-name: fade;
+        animation-duration: 1.5s;
+      }
+
+      img {
+        width: 100%;
+      }
+
+      @keyframes fade {
+        from {
+          opacity: 0.4;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slideshow-container"></div>
+    <br />
+    <div class="dots"></div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "carousel.xml", true);
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(
+              xhr.responseText,
+              "application/xml"
+            );
+            const slides = xml.getElementsByTagName("slide");
+            const container = document.querySelector(".slideshow-container");
+            const dotsContainer = document.querySelector(".dots");
+
+            container.innerHTML = "";
+            dotsContainer.innerHTML = "";
+
+            for (let i = 0; i < slides.length; i++) {
+              const slide = slides[i];
+              const alt = slide.getElementsByTagName("alt")[0].textContent;
+              const image = slide.getElementsByTagName("image")[0].textContent;
+              const website =
+                xml.getElementsByTagName("website")[0].textContent;
+
+              const slideDiv = document.createElement("div");
+              slideDiv.className = "mySlides fade";
+              slideDiv.innerHTML = `
+            <img src="${website}${image}" alt="${alt}">
+            <div class="text">${alt}</div>
+              `;
+              container.appendChild(slideDiv);
+
+              const dot = document.createElement("span");
+              dot.className = "dot";
+              dot.setAttribute("onclick", `currentSlide(${i + 1})`);
+              dotsContainer.appendChild(dot);
+            }
+
+            const prevButton = document.createElement("a");
+            prevButton.className = "prev";
+            prevButton.innerHTML = "&#10094;";
+            prevButton.setAttribute("onclick", "plusSlides(-1)");
+            container.appendChild(prevButton);
+
+            const nextButton = document.createElement("a");
+            nextButton.className = "next";
+            nextButton.innerHTML = "&#10095;";
+            nextButton.setAttribute("onclick", "plusSlides(1)");
+            container.appendChild(nextButton);
+
+            showSlides(slideIndex);
+          } else {
+            console.error("Error fetching the XML:", xhr.statusText);
+          }
+        };
+        xhr.onerror = function () {
+          console.error("Request error...");
+        };
+        xhr.send();
+      });
+
+      let slideIndex = 1;
+      showSlides(slideIndex);
+
+      // Next/previous controls
+      function plusSlides(n) {
+        showSlides((slideIndex += n));
+      }
+
+      // Thumbnail image controls
+      function currentSlide(n) {
+        showSlides((slideIndex = n));
+      }
+
+      function showSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        let dots = document.getElementsByClassName("dot");
+        if (n > slides.length) {
+          slideIndex = 1;
+        }
+        if (n < 1) {
+          slideIndex = slides.length;
+        }
+        for (i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+          dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+      }
+    </script>
+  </body>
+</html>
