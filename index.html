@@ -159,6 +159,7 @@
             container.appendChild(nextButton);
 
             showSlides(slideIndex);
+            runTimedToggle();
           } else {
             console.error("Error fetching the XML:", xhr.statusText);
           }
@@ -180,6 +181,12 @@
       // Thumbnail image controls
       function currentSlide(n) {
         showSlides((slideIndex = n));
+      }
+
+      function runTimedToggle() {
+        setInterval(function () {
+          plusSlides(1);
+        }, 3000);
       }
 
       function showSlides(n) {
